@@ -1,8 +1,7 @@
 # Install zbar and Pyzbar (pyzbar only if you are using Python version 3 or later)
-#!pip install zbar
-#!pip install pyzbar
+# !pip install zbar
+# !pip install pyzbar
 
-# Import libraries 
 import cv2 as cv
 import numpy as np
 import pyzbar.pyzbar as pyzbar
@@ -11,6 +10,14 @@ def add_to_list_if_not_exists(mydata, data_list):
     if mydata not in data_list:
         data_list.append(mydata)
     return data_list
+
+def adjust_brightness_contrast(frame, brightness=0, contrast=0):
+    # Adjust brightness and contrast using numpy operations
+    frame = np.int16(frame)
+    frame = frame * (contrast / 127 + 1) - contrast + brightness
+    frame = np.clip(frame, 0, 255)
+    frame = np.uint8(frame)
+    return frame
 
 def detector(video_path):
 
@@ -31,6 +38,9 @@ def detector(video_path):
 
         if fps > 0:
             cv.waitKey(int(1000 / fps))
+
+        # Adjust brightness and contrast
+        frame = adjust_brightness_contrast(frame, brightness=50, contrast=20)
 
         # Find barcodes and Qr
         for barcode in pyzbar.decode(frame):
