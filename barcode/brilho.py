@@ -13,7 +13,7 @@ def add_to_list_if_not_exists(mydata, data_list):
     return data_list
 
 def add_to_list_if_matches_pattern(mydata, data_list):
-    pattern = r'[A-Za-z]\d'
+    pattern = r'[A-Da-d][0-4]'
     if re.match(pattern, mydata):
         if mydata not in data_list:
             data_list.append(mydata)        
@@ -55,7 +55,7 @@ def detector(video_path):
             
             # Convert the data from bytes to string
             mydata = barcode.data.decode('utf-8')
-            print(mydata)
+            print(mydata) #if for pattern?
             
             # Add mydata to the list if it doesn't exist
             data_list = add_to_list_if_matches_pattern(mydata, data_list)
