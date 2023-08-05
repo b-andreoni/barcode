@@ -48,5 +48,5 @@ def detector(video_path):
 
 if __name__ == '__main__':
     # Pass the video file path to the detector function
-    video_path = "captura2.mp4"  # Replace with the actual video file path
+    video_path = "captura3.mp4"  # Replace with the actual video file path
     detector(video_path)

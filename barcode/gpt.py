@@ -15,7 +15,6 @@ def adjust_brightness_contrast(frame, brightness=0, contrast=0):
     return frame
 
 def detector(video_path):
-
     data_list = []  # Initialize an empty list to store unique mydata
 
     # Initialize the video capture
@@ -26,12 +25,6 @@ def detector(video_path):
 
         if not ret:
             break
-
-        # Check image quality (focus and lighting)
-        #gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        #if cv.Laplacian(gray_frame, cv.CV_64F).var() < 1000:
-        #    print("Ignoring low-quality frame")
-        #    continue 
 
         # Adjust brightness and contrast
         frame = adjust_brightness_contrast(frame, brightness=50, contrast=20)
@@ -53,7 +46,10 @@ def detector(video_path):
                 # Convert the contour to a format compatible with pyzbar
                 points = approx[:, 0, :]
                 barcode_polygon = [tuple(point) for point in points]
+
+                # Reshape the barcode_polygon to (N, 1, 2)
                 barcode_polygon = np.array(barcode_polygon, np.int32)
+                barcode_polygon = barcode_polygon.reshape((-1, 1, 2))
 
                 # Find barcodes in the frame
                 barcodes = pyzbar.decode(gray_frame, symbols=[pyzbar.ZBarSymbol.CODE128, pyzbar.ZBarSymbol.EAN13, pyzbar.ZBarSymbol.EAN8, pyzbar.ZBarSymbol.QRCODE])
@@ -87,5 +83,5 @@ def detector(video_path):
 # Main
 if __name__ == '__main__':
     # Pass the video file path to the detector function
-    video_path = "slow.mp4"  # Replace with the actual video file path
+    video_path = 0  # Replace with the actual video file path
     detector(video_path)

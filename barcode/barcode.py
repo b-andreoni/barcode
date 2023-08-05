@@ -67,5 +67,5 @@ def detector(video_path):
 # Main             
 if __name__ == '__main__':
     # Pass the video file path to the detector function
-    video_path = "slow.mp4"  # Replace with the actual video file path
+    video_path = 0  # Replace with the actual video file path
     detector(video_path)

@@ -5,10 +5,18 @@
 import cv2 as cv
 import numpy as np
 import pyzbar.pyzbar as pyzbar
+import re
 
 def add_to_list_if_not_exists(mydata, data_list):
     if mydata not in data_list:
         data_list.append(mydata)
+    return data_list
+
+def add_to_list_if_matches_pattern(mydata, data_list):
+    pattern = r'[A-Za-z]\d'
+    if re.match(pattern, mydata):
+        if mydata not in data_list:
+            data_list.append(mydata)        
     return data_list
 
 def adjust_brightness_contrast(frame, brightness=0, contrast=0):
@@ -40,7 +48,7 @@ def detector(video_path):
             cv.waitKey(int(1000 / fps))
 
         # Adjust brightness and contrast
-        frame = adjust_brightness_contrast(frame, brightness=50, contrast=20)
+        frame = adjust_brightness_contrast(frame, brightness=80, contrast=40)
 
         # Find barcodes and Qr
         for barcode in pyzbar.decode(frame):
@@ -50,7 +58,7 @@ def detector(video_path):
             print(mydata)
             
             # Add mydata to the list if it doesn't exist
-            data_list = add_to_list_if_not_exists(mydata, data_list)
+            data_list = add_to_list_if_matches_pattern(mydata, data_list)
             
             # Add bounding box to qr codes and barcodes
             points = np.array([barcode.polygon], np.int32)
@@ -77,5 +85,5 @@ def detector(video_path):
 # Main             
 if __name__ == '__main__':
     # Pass the video file path to the detector function
-    video_path = "slow.mp4"  # Replace with the actual video file path
+    video_path = 0  # Replace with the actual video file path
     detector(video_path)
