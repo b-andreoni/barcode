@@ -75,11 +75,11 @@ def detector(video_path):
       
         # The 'q' button is set as the quitting button
         if cv.waitKey(1) & 0xFF == ord('q'):
+            video.release()
+            cv.destroyAllWindows()
             break
 
     # Release video and close window
-    video.release()
-    cv.destroyAllWindows()
     print(data_list)
 
 # Main             
