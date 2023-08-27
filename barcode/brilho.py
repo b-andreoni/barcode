@@ -7,10 +7,11 @@ import numpy as np
 import pyzbar.pyzbar as pyzbar
 import re
 
-def add_to_list_if_not_exists(mydata, data_list):
+"""def add_to_list_if_not_exists(mydata, data_list):
     if mydata not in data_list:
         data_list.append(mydata)
     return data_list
+"""
 
 def add_to_list_if_matches_pattern(mydata, data_list):
     pattern = r'[A-Da-d][0-4]'
@@ -18,6 +19,13 @@ def add_to_list_if_matches_pattern(mydata, data_list):
         if mydata not in data_list:
             data_list.append(mydata)        
     return data_list
+
+def print_if_matches_pattern(mydata):
+    pattern = r'[A-Da-d][0-4]'
+    if re.match(pattern, mydata):
+        print ("Impressao com filtro:", mydata)
+    else:
+        print ("Sem filtro:", mydata)
 
 def adjust_brightness_contrast(frame, brightness=0, contrast=0):
     # Adjust brightness and contrast using numpy operations
@@ -48,14 +56,14 @@ def detector(video_path):
             cv.waitKey(int(1000 / fps))
 
         # Adjust brightness and contrast
-        frame = adjust_brightness_contrast(frame, brightness=80, contrast=40)
+        frame = adjust_brightness_contrast(frame, brightness=30, contrast=70)
 
         # Find barcodes and Qr
         for barcode in pyzbar.decode(frame):
             
             # Convert the data from bytes to string
             mydata = barcode.data.decode('utf-8')
-            print(mydata) #if for pattern?
+            print_if_matches_pattern(mydata) #if for pattern?
             
             # Add mydata to the list if it doesn't exist
             data_list = add_to_list_if_matches_pattern(mydata, data_list)
@@ -85,5 +93,5 @@ def detector(video_path):
 # Main             
 if __name__ == '__main__':
     # Pass the video file path to the detector function
-    video_path = 0  # Replace with the actual video file path
+    video_path = "captura13.mp4"  # Replace with the actual video file path
     detector(video_path)
